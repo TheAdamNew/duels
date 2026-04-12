@@ -1,0 +1,20 @@
+name: DuelsX
+version: 1.0.0
+main: me.theadamnew.duelsx.DuelPlugin
+api-version: 1.21
+author: TheAdamNew
+description: A duel system for Minecraft
+permissions:
+  duel.use:
+    description: Allows use of duel commands
+    default: true
+  duel.admin:
+    description: Allows use of duel admin commands
+    default: op
+commands:
+  duel:
+    description: Duel command main
+    usage: /<command> <player|accept|deny|end|stats|kits|leaderboard>
+  dueladmin:
+    description: Duel admin commands
+    usage: /<command> <create|setspawn1|setspawn2|delete|list>

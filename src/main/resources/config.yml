@@ -1,0 +1,57 @@
+# Duel Plugin Configuration
+
+settings:
+  prefix: "&6[&eDuels&6]"
+  request-timeout: 30
+  clear-inventory: true
+  give-default-items: true
+  health: 20
+  food: 20
+  god-mode-duration: 2.5
+  god-mode-fly: true
+
+# Arena/Map Configuration (use /duel admin create to add)
+maps: {}
+
+modes:
+  sword:
+    name: "Sword"
+    description: "Diamond Sword + Prot 1 Diamond Armor"
+    rounds: 1
+  classic:
+    name: "Classic"
+    description: "Iron Gear - Standard Fight"
+    rounds: 1
+  archer:
+    name: "Archer"
+    description: "Bow + Arrow Specialist"
+    rounds: 1
+
+database:
+  enabled: true
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: "password"
+  database: "duel_plugin"
+  
+rewards:
+  win:
+    enabled: true
+    money: 100
+    experience: 50
+    commands:
+      - "give {player} diamond 1"
+  lose:
+    enabled: true
+    money: 25
+    experience: 10
+
+stats:
+  enabled: true
+  reset-permission: "duel.admin.reset"
+
+leaderboard:
+  size: 10
+  update-interval: 60
+  default-type: "wins"

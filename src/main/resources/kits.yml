@@ -1,0 +1,106 @@
+# Duel Kit Configuration
+# Add your custom kits here following this format
+
+kits:
+  sword:
+    permission: ""
+    displayname: "&bSword Mode"
+    icon: "DIAMOND_SWORD"
+    lore:
+      - "&bDiamond Sword + Protection"
+      - "&7High quality gear"
+    items:
+      - "DIAMOND_SWORD:1"
+      - "DIAMOND_HELMET:1&enchant:protection:1"
+      - "DIAMOND_CHESTPLATE:1&enchant:protection:1"
+      - "DIAMOND_LEGGINGS:1&enchant:protection:1"
+      - "DIAMOND_BOOTS:1&enchant:protection:1"
+      - "GOLDEN_APPLE:8"
+
+  default:
+    permission: ""
+    displayname: "&7Classic"
+    icon: "IRON_SWORD"
+    lore:
+      - "&7Iron Sword + Bow"
+      - "&aStandard combat"
+    items:
+      - "IRON_SWORD:1"
+      - "IRON_HELMET:1"
+      - "IRON_CHESTPLATE:1"
+      - "IRON_LEGGINGS:1"
+      - "IRON_BOOTS:1"
+      - "BOW:1"
+      - "ARROW:64"
+      - "GOLDEN_APPLE:8"
+
+  ranked:
+    permission: "duel.kit.ranked"
+    displayname: "&6Ranked Kit"
+    icon: "GOLDEN_SWORD"
+    lore:
+      - "&6Premium combat gear"
+      - "&eRanked only"
+    items:
+      - "GOLDEN_SWORD:1"
+      - "BOW:1"
+      - "ARROW:64"
+      - "GOLDEN_APPLE:16"
+      - "ENDER_PEARL:4"
+
+  archer:
+    permission: "duel.kit.archer"
+    displayname: "&2Archer Kit"
+    icon: "BOW"
+    lore:
+      - "&2Ranged combat specialist"
+      - "&aLong range advantage"
+    items:
+      - "BOW:1"
+      - "ARROW:128"
+      - "WOODEN_SWORD:1"
+      - "GOLDEN_APPLE:12"
+      - "SPEED_POTION:1&effect:speed&duration:120&level:2"
+
+  tank:
+    permission: "duel.kit.tank"
+    displayname: "&8Tank Kit"
+    icon: "DIAMOND_CHESTPLATE"
+    lore:
+      - "&8Heavy defense specialist"
+      - "&aMaximum protection"
+    items:
+      - "DIAMOND_SWORD:1"
+      - "DIAMOND_HELMET:1"
+      - "DIAMOND_CHESTPLATE:1"
+      - "DIAMOND_LEGGINGS:1"
+      - "DIAMOND_BOOTS:1"
+      - "GOLDEN_APPLE:5"
+
+  berserker:
+    permission: "duel.kit.berserker"
+    displayname: "&cBerserker Kit"
+    icon: "GOLDEN_SWORD"
+    lore:
+      - "&cHigh damage dealer"
+      - "&eAggressive playstyle"
+    items:
+      - "GOLDEN_SWORD:1"
+      - "GOLDEN_APPLE:32"
+      - "POTION:1&effect:strength&duration:180&level:2"
+
+  magic:
+    permission: "duel.kit.magic"
+    displayname: "&5Magic Kit"
+    icon: "BLAZE_ROD"
+    lore:
+      - "&5Mystical combat"
+      - "&dUse potions strategically"
+    items:
+      - "BLAZE_ROD:1"
+      - "EYE_OF_ENDER:8"
+      - "ENDER_PEARL:8"
+      - "GOLDEN_APPLE:8"
+      - "POTION:1&effect:strength&duration:180&level:1"
+      - "POTION:1&effect:speed&duration:180&level:1"
+      - "POTION:1&effect:resistance&duration:120&level:1"

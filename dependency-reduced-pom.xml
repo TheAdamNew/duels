@@ -36,6 +36,10 @@
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>me.theadamnew.duelsx.lib.slf4j</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>net.kyori</pattern>
+                  <shadedPattern>me.theadamnew.duelsx.lib.kyori</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>

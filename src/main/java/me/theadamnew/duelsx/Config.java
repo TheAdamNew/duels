@@ -189,7 +189,15 @@ public class Config {
     }
 
     public static String getPluginPrefix() {
-        return config.getString("settings.prefix", "&6[&eDuels&6]");
+        return config.getString("settings.prefix", "<gradient:#ffd700:#ff8c00>[Duels]</gradient>");
+    }
+
+    public static boolean isMiniMessageEnabled() {
+        return config.getBoolean("settings.mini-message", true);
+    }
+
+    public static boolean isRgbSupportEnabled() {
+        return config.getBoolean("settings.rgb-support", true);
     }
 
     public static Map<String, DuelMode> getDuelModes() {

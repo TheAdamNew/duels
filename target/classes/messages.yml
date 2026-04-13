@@ -1,0 +1,110 @@
+messages:
+  prefix: "<#ff8c00>[Duels]</#ff8c00> "
+  no-permission: "<red>You don't have permission!</red>"
+  console-only: "<red>Only players can use this command!</red>"
+  player-not-found: "<red>Player not found: {player}</red>"
+  player-not-online: "<red>That player is not online!</red>"
+
+  duel:
+    help-header: "<dark_gray>╔══════════════════════════════════╗</dark_gray>"
+    help-title: "<gold>         ⚔ Duel Commands ⚔</gold>"
+    help-footer: "<dark_gray>╚══════════════════════════════════╝</dark_gray>"
+    help-challenge: "<aqua>/duel <player> <gray>▸ <white>Challenge player</white></aqua>"
+    help-accept: "<aqua>/duel accept <gray>▸ <white>Accept duel</white></aqua>"
+    help-deny: "<aqua>/duel deny <gray>▸ <white>Deny duel</white></aqua>"
+    help-end: "<aqua>/duel end <gray>▸ <white>Forfeit duel</white></aqua>"
+    help-stats: "<aqua>/duel stats <gray>▸ <white>View your stats</white></aqua>"
+    help-top: "<aqua>/duel top <gray>▸ <white>Leaderboard</white></aqua>"
+    help-kits: "<aqua>/duel kits <gray>▸ <white>Kit selector</white></aqua>"
+    help-footer-line: "<dark_gray>═══════════════════════════════════</dark_gray>"
+    
+    usage: "<red>Usage: /duel <player></red>"
+    cannot-duel-self: "<red>You can't duel yourself!</red>"
+    
+    request-sent-header: "<gray>═══════════════════════════════</gray>"
+    request-sent: "<green>Duel request sent to {target}</green>"
+    request-mode: "<yellow>Mode: <aqua>{mode}</aqua> <yellow>| Rounds: <aqua>{rounds}</aqua></yellow>"
+    
+    request-received-header: "<gray>═══════════════════════════════</gray>"
+    request-received: "<gold>⚔ {sender} <yellow>wants to duel you!</yellow></gold>"
+    
+    accept-no-request: "<gray>═══════════════════════════════</gray>"
+    accept-no-request-text: "<red>No pending duel request found.</red>"
+    accept-success: "<green>Duel accepted! Starting...</green>"
+    
+    deny-no-request: "<red>No pending duel request!</red>"
+    deny-success: "<yellow>Duel request denied.</yellow>"
+    deny-sender-notified: "<red>{player} denied your duel request!</red>"
+    
+    no-arena: "<red>No valid arena found! Please create an arena first.</red>"
+    arena-invalid: "<red>Arena spawns not configured properly!</red>"
+    kit-applied: "<green>Kit applied!</green>"
+    god-mode: "<green>God mode activated for {duration} seconds!</green>"
+    
+    win: "<green>You won the duel!</green>"
+    lose: "<red>You lost the duel!</red>"
+    reward-win: "<green>You received {money} coins and {exp} XP!</green>"
+    reward-lose: "<yellow>You received {money} coins and {exp} XP!</yellow>"
+    
+    not-in-duel: "<red>You're not in a duel!</red>"
+    forfeit: "<green>{player} forfeited! You win!</green>"
+    opponent-left: "<red>Your opponent left the duel!</red>"
+    
+    kit-not-found: "<red>Kit not found!</red>"
+    kit-no-permission: "<red>You don't have permission for the {kit} kit!</red>"
+    kit-selected: "<green>Kit: {kit} equipped!</green>"
+    kit-select-hint: "<yellow>Now use /duel <player> to start a duel!</yellow>"
+    
+    stats-header: "<gray>══════════════════════════════════════</gray>"
+    stats-title: "<aqua>           Your Duel Stats</aqua>"
+    stats-player: "<white>Player: <yellow>{player}</yellow></white>"
+    stats-wins: "<white>Wins: <green>{wins}</green></white>"
+    stats-losses: "<white>Losses: <red>{losses}</red></white>"
+    stats-plays: "<white>Plays: <aqua>{plays}</aqua></white>"
+    stats-winrate: "<white>Win Rate: {color}{winrate}%</white>"
+    stats-winstreak: "<white>Win Streak: <gold>{winstreak}</gold></white>"
+    stats-bestwinstreak: "<white>Best Win Streak: <gold>{bestwinstreak}</gold></white>"
+    stats-footer: "<gray>══════════════════════════════════════</gray>"
+    stats-disabled: "<red>Stats are currently disabled.</red>"
+    
+  leaderboard:
+    header: "<gray>╔══════════════════════════════════════╗</gray>"
+    title-wins: "<aqua>         Wins Leaderboard</aqua>"
+    title-losses: "<aqua>        Losses Leaderboard</aqua>"
+    title-plays: "<aqua>         Plays Leaderboard</aqua>"
+    divider: "<gray>╠══════════════════════════════════════╣</gray>"
+    empty: "<yellow>No stats yet!</yellow>"
+    footer: "<gray>╚══════════════════════════════════════╝</gray>"
+    disabled: "<red>Leaderboard is currently disabled.</red>"
+    
+  admin:
+    no-permission: "<red>No permission!</red>"
+    console-must-be-player: "<red>This command must be used as a player!</red>"
+    
+    create-usage: "<red>Usage: /duel admin create <mapname></red>"
+    setspawn1-usage: "<red>Usage: /duel admin setspawn1 <mapname></red>"
+    setspawn2-usage: "<red>Usage: /duel admin setspawn2 <mapname></red>"
+    delete-usage: "<red>Usage: /duel admin delete <mapname></red>"
+    
+    map-exists: "<red>Map '{map}' already exists!</red>"
+    map-not-exist: "<red>Map '{map}' does not exist! Use /duel admin create {map}</red>"
+    map-created: "<green>Map '{map}' created!</green>"
+    map-deleted: "<green>Map '{map}' deleted!</green>"
+    spawn1-set: "<green>Spawn 1 set for {map}!</green>"
+    spawn2-set: "<green>Spawn 2 set for {map}!</green>"
+    setspawn-hint1: "<yellow>Stand where you want spawn1 and use: /duel admin setspawn1 {map}</yellow>"
+    setspawn-hint2: "<yellow>Stand where you want spawn2 and use: /duel admin setspawn2 {map}</yellow>"
+    
+  gui:
+    kit-selector-title: "⚔ Kit Selector"
+    kit-click-select: "<green>» Click to select!</green>"
+    kit-locked: "<red>» Locked!</red>"
+    close-button: "<red>✕ Close</red>"
+    close-lore: "<gray>», Close this menu</gray>"
+    
+  error:
+    already-in-duel: "<red>One of the players is already in a duel!</red>"
+    already-has-request: "<red>{target} already has a pending duel request!</red>"
+    target-no-request: "<red>No pending duel request from that player!</red>"
+    request-timeout: "<red>Duel request timed out!</red>"
+    request-cancelled: "<red>Duel request cancelled.</red>"

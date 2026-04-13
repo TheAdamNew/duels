@@ -69,7 +69,6 @@ public class KitManager {
         }
         giveKitItems(player, kit.items());
         playerKits.put(player, kitName.toLowerCase());
-        player.sendMessage(ChatColor.GREEN + "Kit: " + kit.displayName() + ChatColor.GREEN + " equipped!");
         return true;
     }
 

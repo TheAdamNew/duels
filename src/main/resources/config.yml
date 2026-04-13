@@ -1,7 +1,7 @@
-# Duel Plugin Configuration
-
 settings:
-  prefix: "&6[&eDuels&6]"
+  prefix: "&6&l[&e&lDuels&6&l]&r "
+  mini-message: false
+  rgb-support: false
   request-timeout: 30
   clear-inventory: true
   give-default-items: true
@@ -10,7 +10,6 @@ settings:
   god-mode-duration: 2.5
   god-mode-fly: true
 
-# Arena/Map Configuration (use /duel admin create to add)
 maps: {}
 
 modes:
@@ -34,7 +33,7 @@ database:
   username: "root"
   password: "password"
   database: "duel_plugin"
-  
+   
 rewards:
   win:
     enabled: true

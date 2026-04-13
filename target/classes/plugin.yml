@@ -3,7 +3,7 @@ version: 1.0.0
 main: me.theadamnew.duelsx.DuelPlugin
 api-version: 1.21
 author: TheAdamNew
-description: A duel system for Minecraft players
+description: A duel system for Minecraft
 permissions:
   duel.use:
     description: Allows use of duel commands

@@ -1,10 +1,15 @@
 package me.theadamnew.duelsx;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public final class DuelPlugin extends JavaPlugin {
 
     private static DuelPlugin instance;
+    private static FileConfiguration messagesConfig;
 
     @Override
     public void onEnable() {
@@ -15,6 +20,13 @@ public final class DuelPlugin extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         Config.init(getConfig());
+
+        File messagesFile = new File(getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) {
+            saveResource("messages.yml", false);
+        }
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        Messages.init(messagesConfig);
 
         KitManager.loadKits(this);
         

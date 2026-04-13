@@ -71,6 +71,9 @@ public class AdminCommand implements TabExecutor {
             case "list" -> {
                 listMaps(sender);
             }
+            case "reload" -> {
+                reloadPlugin(sender);
+            }
             default -> {
                 sendHelp(sender);
             }
@@ -197,6 +200,13 @@ public class AdminCommand implements TabExecutor {
         sender.sendMessage(ChatColor.GRAY + "═══════════════════════════════");
     }
 
+    private void reloadPlugin(CommandSender sender) {
+        DuelPlugin.getInstance().reloadConfig();
+        Config.init(DuelPlugin.getInstance().getConfig());
+        KitManager.reloadKits();
+        sender.sendMessage(ChatColor.GREEN + "Plugin reloaded successfully!");
+    }
+
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(ChatColor.DARK_GRAY + "╔══════════════════════════════════╗");
         sender.sendMessage(ChatColor.GOLD + "       ⚔ Admin Commands ⚔");
@@ -206,6 +216,7 @@ public class AdminCommand implements TabExecutor {
         sender.sendMessage(ChatColor.AQUA + "/duel admin setspawn2 <map>" + ChatColor.GRAY + " ▸ " + ChatColor.WHITE + "Set player 2 spawn");
         sender.sendMessage(ChatColor.AQUA + "/duel admin delete <map>" + ChatColor.GRAY + " ▸ " + ChatColor.WHITE + "Delete arena");
         sender.sendMessage(ChatColor.AQUA + "/duel admin list" + ChatColor.GRAY + " ▸ " + ChatColor.WHITE + "List all arenas");
+        sender.sendMessage(ChatColor.AQUA + "/duel admin reload" + ChatColor.GRAY + " ▸ " + ChatColor.WHITE + "Reload plugin");
         sender.sendMessage(ChatColor.DARK_GRAY + "═══════════════════════════════════");
     }
 
@@ -219,6 +230,7 @@ public class AdminCommand implements TabExecutor {
             completions.add("setspawn2");
             completions.add("delete");
             completions.add("list");
+            completions.add("reload");
         } else if (args.length == 2) {
             if ("delete".equals(args[0])) {
                 var config = DuelPlugin.getInstance().getConfig();

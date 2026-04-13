@@ -23,25 +23,29 @@ public class DuelGUI implements Listener {
     private static final Map<UUID, DuelSetupData> pendingSetup = new HashMap<>();
 
 public static void openDuelSetup(Player sender, Player target) {
+        DuelSetupData existing = pendingSetup.get(sender.getUniqueId());
+        String currentMode = (existing != null) ? existing.mode() : "classic";
+        int currentRounds = (existing != null) ? existing.rounds() : 1;
+        
         Inventory inv = Bukkit.createInventory(null, 27, ChatColor.DARK_AQUA + "⚔ Duel Setup");
 
         ItemStack modeItem = createItem(Material.COMPASS, 
             ChatColor.AQUA + "➤ Select Mode", 
-            List.of(ChatColor.GRAY + "», Click to choose game mode"));
+            List.of(ChatColor.GRAY + "», Current: " + getModeDisplayName(currentMode)));
         inv.setItem(11, modeItem);
 
         ItemStack roundsItem = createItem(Material.BOOK, 
             ChatColor.GREEN + "➤ Select Rounds", 
-            List.of(ChatColor.GRAY + "», Click to choose rounds"));
+            List.of(ChatColor.GRAY + "», Current: " + currentRounds));
         inv.setItem(13, roundsItem);
 
         ItemStack confirmItem = createItem(Material.LIME_CONCRETE, 
-            ChatColor.GREEN + "✦ CONFIRM ✦", 
+            ChatColor.GREEN + "ᴄᴏɴꜰɪʀᴍ", 
             List.of(ChatColor.GREEN + "», Click to send request"));
         inv.setItem(22, confirmItem);
 
         ItemStack cancelItem = createItem(Material.RED_CONCRETE, 
-            ChatColor.RED + "✕ CANCEL ✕", 
+            ChatColor.RED + "ᴄᴀɴᴄᴇʟ", 
             List.of(ChatColor.RED + "», Click to cancel"));
         inv.setItem(26, cancelItem);
 
@@ -56,9 +60,14 @@ public static void openDuelSetup(Player sender, Player target) {
         ItemStack player2Head = createPlayerHead(target);
         inv.setItem(5, player2Head);
 
-        pendingSetup.put(sender.getUniqueId(), new DuelSetupData(target, "classic", 1));
+        pendingSetup.put(sender.getUniqueId(), new DuelSetupData(target, currentMode, currentRounds));
 
         sender.openInventory(inv);
+    }
+
+    private static String getModeDisplayName(String modeId) {
+        Config.DuelMode mode = Config.getDuelModes().get(modeId);
+        return mode != null ? mode.name() : "Classic";
     }
 
     private static ItemStack createItem(Material material, String name, List<String> lore) {
@@ -106,7 +115,8 @@ public static void openDuelSetup(Player sender, Player target) {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!event.getView().getTitle().contains("Duel Setup")) return;
+        String title = event.getView().getTitle();
+        if (!title.contains("Duel Setup") && !title.contains("Select Mode") && !title.contains("Select Rounds")) return;
 
         event.setCancelled(true);
         ItemStack clicked = event.getCurrentItem();
@@ -116,6 +126,43 @@ public static void openDuelSetup(Player sender, Player target) {
         DuelSetupData setup = pendingSetup.get(playerId);
         if (setup == null) {
             player.closeInventory();
+            return;
+        }
+
+        if (title.contains("Select Mode")) {
+            if (clicked.getType() == Material.LIME_WOOL || clicked.getType() == Material.GRAY_WOOL) {
+                String name = clicked.getItemMeta().getDisplayName();
+                String displayLower = name.toLowerCase();
+                String modeId = null;
+                for (Config.DuelMode m : Config.getDuelModes().values()) {
+                    if (name.equalsIgnoreCase("✦ " + m.name()) || displayLower.contains(m.name().toLowerCase())) {
+                        modeId = m.id();
+                        break;
+                    }
+                }
+                if (modeId == null) modeId = "classic";
+                updateSetupData(playerId, modeId, setup.rounds());
+                openDuelSetup(player, setup.target());
+            } else if (clicked.getType() == Material.ARROW) {
+                openDuelSetup(player, setup.target());
+            }
+            return;
+        }
+
+        if (title.contains("Select Rounds")) {
+            if (clicked.getType() == Material.LIME_WOOL || clicked.getType() == Material.GRAY_WOOL) {
+                String name = clicked.getItemMeta().getDisplayName();
+                int rounds = 1;
+                if (name.contains("Best of 3")) {
+                    rounds = 3;
+                } else if (name.contains("Best of 5")) {
+                    rounds = 5;
+                }
+                updateSetupData(playerId, setup.mode(), rounds);
+                openDuelSetup(player, setup.target());
+            } else if (clicked.getType() == Material.ARROW) {
+                openDuelSetup(player, setup.target());
+            }
             return;
         }
 

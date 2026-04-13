@@ -2,7 +2,6 @@
 # Add your custom kits here following this format
 
 kits:
-  # Sword mode kit - Diamond Sword + Prot 1 Diamond Armor
   sword:
     permission: ""
     displayname: "&bSword Mode"
@@ -18,7 +17,6 @@ kits:
       - "DIAMOND_BOOTS:1&enchant:protection:1"
       - "GOLDEN_APPLE:8"
 
-  # Default / Classic kit - Iron gear
   default:
     permission: ""
     displayname: "&7Classic"
@@ -36,7 +34,6 @@ kits:
       - "ARROW:64"
       - "GOLDEN_APPLE:8"
 
-  # Ranked kit - requires higher permission
   ranked:
     permission: "duel.kit.ranked"
     displayname: "&6Ranked Kit"
@@ -51,7 +48,6 @@ kits:
       - "GOLDEN_APPLE:16"
       - "ENDER_PEARL:4"
 
-  # Archer kit - bow specialist
   archer:
     permission: "duel.kit.archer"
     displayname: "&2Archer Kit"
@@ -66,7 +62,6 @@ kits:
       - "GOLDEN_APPLE:12"
       - "SPEED_POTION:1&effect:speed&duration:120&level:2"
 
-  # Tank kit - heavy armor
   tank:
     permission: "duel.kit.tank"
     displayname: "&8Tank Kit"
@@ -82,7 +77,6 @@ kits:
       - "DIAMOND_BOOTS:1"
       - "GOLDEN_APPLE:5"
 
-  # Berserker kit - high damage
   berserker:
     permission: "duel.kit.berserker"
     displayname: "&cBerserker Kit"
@@ -95,7 +89,6 @@ kits:
       - "GOLDEN_APPLE:32"
       - "POTION:1&effect:strength&duration:180&level:2"
 
-  # Magic kit - potion effects
   magic:
     permission: "duel.kit.magic"
     displayname: "&5Magic Kit"

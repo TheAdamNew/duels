@@ -1,7 +1,5 @@
 package me.theadamnew.duelsx;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,22 +40,12 @@ public class DuelManager implements Listener {
         sender.sendMessage(ChatColor.YELLOW + "Mode: " + ChatColor.AQUA + mode + ChatColor.YELLOW + " | Rounds: " + ChatColor.AQUA + rounds);
         sender.sendMessage(ChatColor.GRAY + "═══════════════════════════════");
 
-        BaseComponent[] acceptBtn = new ComponentBuilder(ChatColor.GREEN + "[ACCEPT]")
-            .event(new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, "/duel accept"))
-            .event(new net.md_5.bungee.api.chat.HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(ChatColor.GREEN + "Click to accept!")))
-            .create();
-        
-        BaseComponent[] denyBtn = new ComponentBuilder(ChatColor.RED + "[DENY]")
-            .event(new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, "/duel deny"))
-            .event(new net.md_5.bungee.api.chat.HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(ChatColor.RED + "Click to deny!")))
-            .create();
-
         target.sendMessage(ChatColor.GRAY + "═══════════════════════════════");
         target.sendMessage(ChatColor.GOLD + "⚔ " + sender.getName() + ChatColor.YELLOW + " wants to duel you!");
         target.sendMessage(ChatColor.YELLOW + "Mode: " + ChatColor.AQUA + mode + ChatColor.YELLOW + " | Rounds: " + ChatColor.AQUA + rounds);
         target.sendMessage(ChatColor.YELLOW + " ");
-        target.spigot().sendMessage(acceptBtn);
-        target.spigot().sendMessage(denyBtn);
+        target.sendMessage(ChatColor.GREEN + "► " + ChatColor.BOLD + "ACCEPT" + ChatColor.RESET + ChatColor.GREEN + " - /duel accept");
+        target.sendMessage(ChatColor.RED + "► " + ChatColor.BOLD + "DENY" + ChatColor.RESET + ChatColor.RED + " - /duel deny");
         target.sendMessage(ChatColor.GRAY + "═══════════════════════════════");
 
         Bukkit.getScheduler().runTaskLater(DuelPlugin.getInstance(), () -> {
@@ -184,12 +172,13 @@ public class DuelManager implements Listener {
             String kitName = mode.equals("archer") ? "archer" : mode.equals("sword") ? "sword" : "default";
             KitManager.giveKit(player1, kitName);
             KitManager.giveKit(player2, kitName);
-            player1.sendMessage(ChatColor.GREEN + "Kit applied!");
-            player2.sendMessage(ChatColor.GREEN + "Kit applied!");
         }
 
         player1.teleport(spawn1);
         player2.teleport(spawn2);
+
+        spawn1.getWorld().setGameRule(org.bukkit.GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        spawn2.getWorld().setGameRule(org.bukkit.GameRule.ANNOUNCE_ADVANCEMENTS, false);
 
         player1.setInvulnerable(true);
         player2.setInvulnerable(true);
@@ -198,9 +187,6 @@ public class DuelManager implements Listener {
             player1.setAllowFlight(true);
             player2.setAllowFlight(true);
         }
-
-        player1.sendMessage(ChatColor.GREEN + "God mode activated for " + Config.getGodModeDuration() + " seconds!");
-        player2.sendMessage(ChatColor.GREEN + "God mode activated for " + Config.getGodModeDuration() + " seconds!");
 
         Bukkit.getScheduler().runTaskLater(DuelPlugin.getInstance(), () -> {
             if (player1.isOnline()) {
@@ -215,7 +201,7 @@ public class DuelManager implements Listener {
             }
         }, (long) (Config.getGodModeDuration() * 20));
 
-        Duel duel = new Duel(player1, player2, spawn1.getWorld(), p1OriginalLoc, p2OriginalLoc, p1OriginalGM, p2OriginalGM, mode, rounds);
+        Duel duel = new Duel(player1, player2, spawn1.getWorld(), p1OriginalLoc, p2OriginalLoc, p1OriginalGM, p2OriginalGM, mode, rounds, 0, 0);
         activeDuels.put(p1Id, duel);
         activeDuels.put(p2Id, duel);
 
@@ -244,7 +230,10 @@ public class DuelManager implements Listener {
             winner.setGameMode(duel.player1().getUniqueId().equals(winner.getUniqueId()) ? 
                 duel.p1OriginalGM() : duel.p2OriginalGM());
             
-            winner.sendMessage(ChatColor.GREEN + "You won the duel!");
+            int winsNeeded = (duel.rounds() + 1) / 2;
+            winner.sendMessage(ChatColor.GREEN + "You won the duel! " + ChatColor.GRAY + "(" + 
+                (winner.getUniqueId().equals(duel.player1().getUniqueId()) ? duel.p1Wins() : duel.p2Wins()) + 
+                "/" + winsNeeded + ")");
             giveReward(winner, true);
             
             if (Config.isStatsEnabled() && !"practice".equals(duel.mode())) {
@@ -253,24 +242,27 @@ public class DuelManager implements Listener {
         }
 
         if (isLoserOnline) {
+            Location loc = loser.getUniqueId().equals(duel.player1().getUniqueId()) ? 
+                duel.p1OriginalLocation() : duel.p2OriginalLocation();
+            
             if (loser.isDead()) {
                 loser.setHealth(20);
                 loser.setFoodLevel(20);
                 loser.spigot().respawn();
             }
             
-            loser.setGameMode(loser.getUniqueId().equals(duel.player1().getUniqueId()) ? 
-                duel.p1OriginalGM() : duel.p2OriginalGM());
-            
-            Location loc = loser.getUniqueId().equals(duel.player1().getUniqueId()) ? 
-                duel.p1OriginalLocation() : duel.p2OriginalLocation();
-            
             if (loc != null) {
-                loser.teleport(loc);
+                final Location teleportLoc = loc;
+                Bukkit.getScheduler().runTaskLater(DuelPlugin.getInstance(), () -> {
+                    if (loser.isOnline()) {
+                        loser.teleport(teleportLoc);
+                        loser.setGameMode(loser.getUniqueId().equals(duel.player1().getUniqueId()) ? 
+                            duel.p1OriginalGM() : duel.p2OriginalGM());
+                    }
+                }, 2L);
             }
             
             restoreInventory(loser);
-            
             loser.setHealth(20);
             loser.setFoodLevel(20);
             
@@ -363,12 +355,67 @@ public class DuelManager implements Listener {
             event.setKeepInventory(true);
             event.setKeepLevel(true);
             event.getDrops().clear();
+            
             Player winner = getOpponent(player, duel);
-
-            Bukkit.broadcastMessage(ChatColor.RED + player.getName() + " died! " + 
-                (winner != null ? winner.getName() : "?") + " wins the duel!");
-            endDuel(duel, winner, player);
+            boolean player1Won = winner.getUniqueId().equals(duel.player1().getUniqueId());
+            
+            int newP1Wins = player1Won ? duel.p1Wins() + 1 : duel.p1Wins();
+            int newP2Wins = player1Won ? duel.p2Wins() : duel.p2Wins() + 1;
+            
+            int winsNeeded = (duel.rounds() + 1) / 2;
+            
+            if (newP1Wins >= winsNeeded || newP2Wins >= winsNeeded) {
+                Bukkit.broadcastMessage(ChatColor.GOLD + winner.getName() + ChatColor.GREEN + " wins the match!");
+                endDuel(duel, winner, player);
+            } else {
+                Bukkit.broadcastMessage(ChatColor.RED + player.getName() + " died! " + 
+                    ChatColor.GREEN + winner.getName() + ChatColor.YELLOW + " wins the round! " +
+                    ChatColor.AQUA + "(" + newP1Wins + " - " + newP2Wins + ")");
+                
+                activeDuels.remove(player.getUniqueId());
+                activeDuels.remove(winner.getUniqueId());
+                
+                Duel newDuel = new Duel(duel.player1(), duel.player2(), duel.arenaWorld(),
+                    duel.p1OriginalLocation(), duel.p2OriginalLocation(),
+                    duel.p1OriginalGM(), duel.p2OriginalGM(),
+                    duel.mode(), duel.rounds(), newP1Wins, newP2Wins);
+                
+                activeDuels.put(duel.player1().getUniqueId(), newDuel);
+                activeDuels.put(duel.player2().getUniqueId(), newDuel);
+                
+                respawnPlayersForNextRound(duel.player1(), duel.player2(), duel.arenaWorld());
+            }
         }
+    }
+    
+    private static void respawnPlayersForNextRound(Player p1, Player p2, World arenaWorld) {
+        String mapName = Config.getRandomMap();
+        if (mapName == null) {
+            mapName = Config.getMaps().get(0);
+        }
+        if (mapName == null) {
+            endDuel(null, null, null);
+            return;
+        }
+        
+        Location spawn1 = Config.getMapSpawn(mapName, "1");
+        Location spawn2 = Config.getMapSpawn(mapName, "2");
+        
+        p1.setHealth(20);
+        p1.setFoodLevel(20);
+        p1.setInvulnerable(true);
+        
+        p2.setHealth(20);
+        p2.setFoodLevel(20);
+        p2.setInvulnerable(true);
+        
+        p1.teleport(spawn1);
+        p2.teleport(spawn2);
+        
+        Bukkit.getScheduler().runTaskLater(DuelPlugin.getInstance(), () -> {
+            if (p1.isOnline()) p1.setInvulnerable(false);
+            if (p2.isOnline()) p2.setInvulnerable(false);
+        }, (long) (Config.getGodModeDuration() * 20));
     }
 
     public static void onPlayerQuit(Player player) {
@@ -450,7 +497,7 @@ public class DuelManager implements Listener {
     public record Duel(Player player1, Player player2, World arenaWorld, 
                        Location p1OriginalLocation, Location p2OriginalLocation,
                        GameMode p1OriginalGM, GameMode p2OriginalGM,
-                       String mode, int rounds) {}
+                       String mode, int rounds, int p1Wins, int p2Wins) {}
 
     public record DuelRequest(Player sender, Player target, String mode, int rounds) {}
 }
